@@ -1,1 +1,9 @@
-this is a readme file on the repository for WorkInstructions
+this is the main branch for WorkInstructions. Branches will contain each assembly and will contain:
+
+1. a folder containing merged images after they have been sent independently to GitHub
+2. a form of instructions synthesized
+3. the derived drawing
+
+program files can be found in "main" which are executable to recieve files into the repository,
+take files out to synthesize, and page through the instructions by the aid of sensors on the 
+network. User Interfaces are also stored on the main function and organized accordingly. 
