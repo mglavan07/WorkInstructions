@@ -1,6 +1,4 @@
-WorkInstructions is the main GitHub repository for storing all program, image, instruction, and drawing files 
-related to the Final Assembly Project. If additional file types are added (e.g. sensor calibration, data logs, etc.)
-they will be labeled here. All existing branches are:
+WorkInstructions is the main GitHub repository for storing all program, image, instruction, and drawing files related to the Final Assembly Project. If additional file types are added (e.g. sensor calibration, data logs, etc.) they will be labeled here. All existing branches are:
 
 1. "main"
 
@@ -8,8 +6,7 @@ they will be labeled here. All existing branches are:
 
 2. "ImportHere"
 
-"ImportHere" branch stores all imported files, needed to be locally downloaded and reuploaded to "main"
-with the correct Git module commands, accessible via the Python file
+"ImportHere" branch stores all imported files, needed to be locally downloaded and reuploaded to "main" with the correct Git module commands, accessible via the Python file
 
 Contents in "main" are named according to convention:
 Repository Address: \WorkInstructions\BranchName\SectorID\PartNO\FileType\<filename>
@@ -24,9 +21,7 @@ Example: Python file for file uploads [version 1]
 Repository Address: \WorkInstructions\main\<Program_CameraRoll2Repo_1.py>
 Filename: Program_CameraRoll2Repo_1
 
-NOTE: stand alone files, such as instructions or drawings, will be stored without a FileType folder, but lie
-within the same repository location as the FileType folders (up to PartNO). These files will follow file naming
-convention. 
+NOTE: stand alone files, such as instructions or drawings, will be stored without a FileType folder, but lie within the same repository location as the FileType folders (up to PartNO). These files will follow file naming convention. 
 
 If any questions exist reguarding organization, accessibility of files, or repository structure please contact Mirko Glavan:
 HYDAC Email: mirko.glavan@hydacusa.com
