@@ -14,7 +14,7 @@ Filename: FileType_PartNO_< Index NO >
 
 Example: Stored JLG Image 7 for Part NO 7702559
 Repository Address: \WorkInstructions\main\7702559\<AnnotatedImage_7702559_7.png>
-Filename: AnnotatedImage_JLG_7702559_7.png
+Filename: AnnotatedImage_7702559_7.png
 
 NOTE: Program Files are not located in folders, rather they are exist in "main" with naming convention
 Example: Python file for file uploads [version 1]
