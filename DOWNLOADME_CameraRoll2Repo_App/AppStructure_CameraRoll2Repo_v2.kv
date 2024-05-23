@@ -1,0 +1,309 @@
+# AppStructure_CameraRoll2Repo_v2.kv
+# Definitions for Front-End Appearnace of File Uploader App
+# Mirko Glavan
+# 5/20/2024
+#
+#
+# Documentation Provided
+#
+#
+
+# Apply Window Manager to Control Movment Between Screens
+WindowManager:
+	WelcomeWindow:
+	StartWindow:
+	BranchWindow:
+	FolderWindow:
+	CloseWindow:
+
+# WelcomeWindow displays a basic application welcome screen
+<WelcomeWindow>:
+	name: "welcome"
+	FloatLayout:
+		size: root.width, root.height
+
+# Fullscreen Reccomendation
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 1, "left": 1}
+			size_hint: 1, 0.03
+			text: "Reccomended: Adjust to Fullscreen"
+			font_size: 24
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 0.925}
+			size_hint: 1, 0.5
+			text: r"HYDAC Repository Uploader"
+			font_size: 80
+
+# Name | Date
+		Label:
+			text: "Mirko Glavan | May 2024"
+			pos_hint: {"top": 0.5}
+			size_hint: 1, 0.2
+			font_size: 50
+			color: 1,1,1,1
+
+# Close Button
+		Button:	
+			font_size:18
+			background_color:  1,0,0,1
+			color: 1,1,1,1
+			size_hint: 0.045, 0.03
+			pos_hint: {"top":1, "right":1}
+			text: "X"
+			on_release: root.close()
+
+# Continue Button
+		Button:
+			font_size: 32
+			color: 1,1,1,1
+			background_color: 0,1,1,1
+			pos_hint: {"bottom":1}
+			size_hint: 1,0.2
+			text: "Continue"
+			on_release:
+				app.root.current = "start"
+				root.manager.transition.direction = "left"
+
+
+# StartWindow allows the user to select PNG images to upload 
+<StartWindow>:
+	name: "start"
+	FloatLayout:
+		size: root.width, root.height
+
+# Dropbox
+		Button:
+			text: "Press to Attatch Files"
+			font_size: 50
+			color: 1,1,1,1
+			background_color: 0, 1, 1, 1
+			pos_hint: {"top":0.975, "left":0.925, "right":0.925}
+			size_hint:{0.85, 0.375}
+			on_press:
+				root.get_files()
+				root.update_text_data()
+				
+# File Count	
+		Button:	
+			id: counter_box
+			text: root.num_files
+			font_size: 24
+			color: 1,1,1,1
+			background_color: 0.99,0.99,0.99,1
+			pos_hint: {"x":0.325, "bottom":1}
+			size_hint: 0.35, 0.15
+
+# File Name Display
+		Button:	
+			id: file_box
+			background_color: 194/255, 178/255, 128/255, 1
+			color: 1,1,1,1
+			font_size:32
+			text: root.files_print
+			pos_hint:{"bottom":0.175, "top": 0.575, "left":0.925, "right":0.925}
+			size_hint:{0.85,0.4}
+
+# Close Button
+		Button:	
+			font_size:18
+			background_color:  1,0,0,1
+			color: 1,1,1,1
+			size_hint: 0.045, 0.03
+			pos_hint: {"top":1, "right":1}
+			text: "X"
+			on_release: root.close()
+
+# Next Button
+		Button:
+			font_size: 24
+			color: 1,1,1,1
+			background_color: 0.99,0.99,0.99,1
+			pos_hint: {"bottom":1, "right":1}
+			size_hint: 0.25,0.15
+			text: "Next"
+			on_release:
+				app.root.current = "branch"
+				root.manager.transition.direction = "left"
+
+# Back Button
+		Button:
+			font_size: 24
+			color: 1,1,1,1
+			background_color: 0.99,0.99,0.99,1
+			pos_hint: {"bottom":1, "left":1}
+			size_hint: 0.25,0.15
+			text: "Back"
+			on_release:
+				app.root.current = "welcome"
+				root.manager.transition.direction = "right"
+
+# BranchWindow allows the user to select a repository branch
+<BranchWindow>:
+	name: "branch"
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			id: branch_header
+			text: root.branch_header_text
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			font_size: 60
+			
+# Dropdown Menu
+		Spinner:
+			id: branch_dropdown
+			text: root.branch_spinner_text
+			font_size: 42
+			background_color: 0, 1, 1, 1
+			pos_hint:{"y": 0.5, "x":0.025}
+			size_hint:{0.95, 0.25}
+			values: root.get_branches()
+			on_text: root.branches_selection(branch_dropdown.text)
+
+# Close Button
+		Button:	
+			font_size:18
+			background_color:  1,0,0,1
+			color: 1,1,1,1
+			size_hint: 0.045, 0.03
+			pos_hint: {"top":1, "right":1}
+			text: "X"
+			on_release: root.close()
+
+# Next Button
+		Button:
+			font_size: 24
+			color: 1,1,1,1
+			background_color: 0.99,0.99,0.99,1
+			pos_hint: {"bottom":1, "right":1}
+			size_hint: 0.25,0.15
+			text: "Next"
+			on_release:
+				app.root.current = "folder"
+				root.manager.transition.direction = "left"
+
+# Back Button
+		Button:
+			font_size: 24
+			color: 1,1,1,1
+			background_color: 0.99,0.99,0.99,1
+			pos_hint: {"bottom":1, "left":1}
+			size_hint: 0.25,0.15
+			text: "Back"
+			on_release:
+				app.root.current = "start"
+				root.manager.transition.direction = "right"
+
+# FolderWindow allows the user to select a corresponding repository folder
+<FolderWindow>:
+	name: "folder"
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			id: folder_header
+			text: root.folder_header_text
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			font_size: 60
+
+# Dropdown Refresh Button
+				
+		Button:
+			id:refresh
+			text: "Refresh Dropdown"
+			color: 1,1,1,1
+			background_color: 0, 1, 1, 1
+			pos_hint:{"x":0.3875, "y":0}
+			size_hint:0.225, 0.15
+			font_size: 32
+			on_release:
+				root.refresh_button()
+				
+# Dropdown Menu	
+		Spinner:
+			id: folder_dropdown
+			text: root.folder_spinner_text
+			font_size: 42
+			background_color: 0, 1, 1, 1
+			pos_hint:{"y": 0.5, "x":0.025}
+			size_hint:{0.95, 0.25}
+			values: root.folder_options
+			on_text: root.folder_selection(folder_dropdown.text)
+
+# Close Button
+
+		Button:	
+			font_size:18
+			background_color:  1,0,0,1
+			color: 1,1,1,1
+			size_hint: 0.045, 0.03
+			pos_hint: {"top":1, "right":1}
+			text: "X"
+			on_release: root.close()
+
+# SUBMIT Button
+		Button:
+			font_size: 24
+			color: 1,1,1,1
+			background_color: 0.99,0.99,0.99,1
+			pos_hint: {"bottom":1, "right":1}
+			size_hint: 0.25,0.15
+			text: "Submit"
+			on_release: 
+				app.root.current = "close" if root.folders_next_button() else "start"
+				root.manager.transition.direction = "left" if root.has_submitted() else "right"
+				
+# Back Button
+		Button:
+			font_size: 24
+			color: 1,1,1,1
+			background_color: 0.99,0.99,0.99,1
+			pos_hint: {"bottom":1, "left":1}
+			size_hint: 0.25,0.15
+			text: "Back"
+			on_release:
+				app.root.current = "branch"
+				root.manager.transition.direction = "right"
+				root.reset_button_count()
+
+# CloseWindow concludes by prompting the user to close the window
+<CloseWindow>:
+	name: "close"
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 0.875}
+			size_hint: 1, 0.4
+			text: "Files Successfully Uploaded"
+			font_size: 50
+
+# Prompt
+		Label:
+			text: "You May Safely Exit the Window"
+			pos_hint: {"top": 0.45}
+			size_hint: 1, 0.3
+			font_size: 40
+			color: 1,1,1,1
+
+# Close Button
+		Button:	
+			font_size:18
+			background_color:  1,0,0,1
+			color: 1,1,1,1
+			size_hint: 0.045, 0.03
+			pos_hint: {"top":1, "right":1}
+			text: "X"
+			on_release: root.close()
