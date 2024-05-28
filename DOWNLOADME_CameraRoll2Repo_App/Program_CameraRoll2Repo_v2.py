@@ -76,7 +76,7 @@ class AppData:
     # create a conventioned GitHub filename when called as a static
     @staticmethod
     def git_filename(filename, index, folder):
-        git_filetype = '.png' # HARD CODED NAMING CONVENTION                                                           GITHUB NAMING HERE (extension)
+        git_filetype = '.jpg' # HARD CODED NAMING CONVENTION                                                           GITHUB NAMING HERE (extension)
         git_prefix = 'annotated_image'  # HARD CODED NAMING CONVENTION                                                 GITHUB NAMING HERE (prefix)
         file_index = str(index) 
         filename = git_prefix + "_" + folder + "_" + file_index + git_filetype
@@ -167,8 +167,8 @@ def no_folder_selected_popup():
 def non_png_popup():
     # warns users against uploading non PNG images (give contact if needed change)
     try:
-        choice = easygui.boolbox(msg = 'One of the selected files was not a PNG image. All files will be uploaded to GitHub as PNG. Submit Anyway? \n\nIf issue persists, please contact Mirko Glavan',
-                                 title = 'Non-PNG Warning', choices = ('Proceed', 'Cancel'))
+        choice = easygui.boolbox(msg = 'One of the selected files was not a JPG image. All files will be uploaded to GitHub as JPG. Submit Anyway? \n\nIf issue persists, please contact Mirko Glavan',
+                                 title = 'Non-JPG Warning', choices = ('Proceed', 'Cancel'))
         return choice
     except ValueError:
         return False
@@ -235,7 +235,7 @@ class StartWindow(Screen):
         
             for name in files:
                 extension = name[-4:].lower() # LOOK AT LAST 4 LETTERS HARD CODED                                                      # EXTENSION FILTERING HERE
-                if extension != '.png': # NEEDS TO BE '.png' HARD CODED
+                if extension != '.jpg': # NEEDS TO BE '.jpg' HARD CODED
                     nonPNG = True
                     
             if nonPNG:
