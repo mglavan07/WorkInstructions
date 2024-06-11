@@ -1,0 +1,976 @@
+# AppStructure_ImageSynthesis.kv
+# Definitions for Front-End Appearnace of Instruction Synthesis App
+# Mirko Glavan
+# 5/29/2024
+#
+#
+# Documentation Provided
+#
+#
+
+# Apply Window Manager to Control Movment Between Screens
+WindowManager:
+	WelcomeWindow:
+	StartWindow:
+	TextNavWindow:
+	InsertWindow:
+	DeleteWindow:
+	ReplaceAllWindow:
+	ReplaceStreakWindow:
+	ReplaceOneWindow:
+	ProgressWindow:
+	PreviewWindow:
+	CloseWindow:
+
+# WelcomeWindow displays a basic application welcome screen
+<WelcomeWindow>:
+	name: "welcome"
+	FloatLayout:
+		size: root.width, root.height
+
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# Continue Button
+		Button:
+			pos_hint: {"bottom":1}
+			size_hint: 1, 0.2
+			color: 1,1,1,1
+			background_color: 0,1,1,1
+			text: "Continue"
+			font_size:32
+			on_release: 
+				app.root.current = "start"
+				root.manager.transition.direction = "left"
+
+# Title Label
+		Label:
+			pos_hint: {"top": 0.975}
+			size_hint: 1, 0.5
+			color: 1,1,1,1
+			text: "Step 2: HYDAC Instruction Synthesizer"
+			font_size: 80
+
+# Subtitle Label 
+		Label:
+			pos_hint: {"top": 0.7}
+			size_hint: 1, 0.25
+			color: 1,1,1,1
+			text: "AI Text Editor and UNET ML Image Segmenter"
+			font_size: 50
+
+# Author Label
+		Label:
+			pos_hint: {"top": 0.5}
+			size_hint: 1, 0.2
+			color: 1,1,1,1
+			text: "Mirko Glavan | June 2024"
+			font_size: 40
+
+# Full Screen Reccomendation Label
+		Label:
+			pos_hint: {"top": 1, "left":1}
+			size_hint: 1, 0.03
+			color: 1,1,1,1
+			text: "Reccomended: Adjust to Fullscreen"
+			font_size: 24
+
+# StartWindow prompts the user to select the assembly (number) for synthesis
+<StartWindow>:
+	name: "start"
+
+	folder:folder
+
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			id:title
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			text: root.folder_header_text
+			font_size: 55
+
+# Spinner Dropdown
+		Spinner:
+			id: folder_dropdown
+			text: "Browse Available:"
+			font_size: 42
+			background_color: 0, 1, 1, 1
+			pos_hint:{"y": 0.3, "x":0.025}
+			size_hint:{0.95, 0.325}
+			values: root.folder_options
+			on_text: root.folder_selection(folder_dropdown.text)
+
+# Text Input Box
+		TextInput:
+			id: folder
+			hint_text: "Quick Search by Assembly Number:"
+			multiline: False
+			font_size: 42
+			halign:'center' # toggle on/off center alignment
+			pos_hint:{"y": 0.65, "x":0.28}
+			size_hint: 0.44, 0.06
+			#on_
+
+# Submit Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "right":1}
+			text: "Submit"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0.99,0.99,0.99,1
+			on_release:
+				app.root.current = "textnav" if root.gather_extract_data() else "welcome"
+				root.manager.transition.direction = "left" if root.gather_extract_data() else "right"
+	
+# Back Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "left":1}
+			text: "Back"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0.99,0.99,0.99,1
+			on_release:
+				app.root.current = "welcome"
+				root.manager.transition.direction = "right"
+
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# Refresh Page Button
+		Button:
+			size_hint: 0.25,0.15 
+			pos_hint: {"x":0.375, "bottom":1}
+			text:"Refresh Page for Search Input"
+			font_size:24
+			color:1,1,1,1
+			background_color:1,1,0,1
+			on_release: root.refresh()
+
+
+# TextNavWindow prompts the user to make changes to the extracted text
+<TextNavWindow>:
+	name: "textnav"
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			text: "Edit the AI-Extracted String to the Annotation Standard"
+			font_size: 60
+
+# Header Label
+		Label:
+			pos_hint: {"top": 1, "left":1}
+			size_hint: 1, 0.03
+			color: 1,1,1,1
+			text: root.header_text 
+			font_size: 24
+
+# Image Number Button-Label
+		Button:
+			id:image_num
+			size_hint: 0.3, 0.15
+			pos_hint: {"bottom":1, "x":0.35}
+			background_color: 1,1,0,1
+			color: 1,1,1,1
+			text: root.progress_text
+			font_size: 24
+			on_release: root.launch_image()
+
+# AI Text Button-Label
+		Button:
+			id:ai_text
+			size_hint: 0.96, 0.5
+			pos_hint: {"x":0.02, "y":0.3}
+			background_color: 255,255,255,1
+			color:0,0,0,1
+			text: root.textbox_text
+			font_size: 18
+			halign:'left'
+
+# Finish Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "right":1}
+			text: "Finish"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0.99,0.99,0.99,1
+			on_release:
+				root.increment_step()
+				app.root.current = "preview" if root.check_complete() else "progress"
+				root.manager.transition.direction = "left"	
+
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# Insert Button
+		Button:
+			size_hint: 0.18, 0.1
+			pos_hint: {"x":0.01, "y": 0.175}
+			text: "Insert Text"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				app.root.current = "insert" 
+				root.manager.transition.direction = "left"	
+			
+# Delete Button
+		Button:
+			size_hint: 0.18, 0.1
+			pos_hint: {"x":0.21, "y": 0.175}
+			text: "Delete Text"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				app.root.current = "delete" 
+				root.manager.transition.direction = "left"	
+
+# Replace All Button
+		Button:
+			size_hint: 0.18, 0.1
+			pos_hint: {"x":0.41, "y": 0.175}
+			text: "Find/Replace All"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				app.root.current = "replaceall" 
+				root.manager.transition.direction = "left"	
+
+# Replace Streak Button
+		Button:
+			size_hint: 0.18, 0.1
+			pos_hint: {"x":0.61, "y": 0.175}
+			text: "Find/Replace Streak"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				app.root.current = "replacestreak" 
+				root.manager.transition.direction = "left"	
+
+# Replace One Button
+		Button:
+			size_hint: 0.18, 0.1
+			pos_hint: {"x":0.81, "y": 0.175}
+			text: "Find/Replace One"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				app.root.current = "replaceone" 
+				root.manager.transition.direction = "left"	
+
+# InsertWindow allows the user to insert text to the extracted
+<InsertWindow>:
+	name: "insert"
+	insert_text:insert_text
+	after_char:after_char
+	after_inst:after_inst
+
+	FloatLayout:
+		size: root.width, root.height
+
+# New Line Syntax Label
+		Label:
+			pos_hint: {"top": 1, "left":1}
+			size_hint: 1, 0.03
+			color: 1,1,1,1
+			text: "To avoid text cut-off, switch to FullScreen | For new lines (EnterKey) use in-place keyphrase: \\n"
+			font_size: 24
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			text: "Insert Text to the AI-Extracted String"
+			font_size: 60
+
+# AI Text Button-Label
+		Button:
+			id:ai_text
+			size_hint: 0.96, 0.5
+			pos_hint: {"x":0.02, "y":0.3}
+			background_color: 255,255,255,1
+			color:0,0,0,1
+			text: root.textbox_text
+			font_size: 18
+			halign:'left'
+
+# Insert TextInput
+		TextInput:
+			id: insert_text
+			hint_text: "Insert Text... (180 Character Limit)"
+			multiline: True
+			font_size: 25
+			pos_hint:{"y": 0.175, "x":0.01}
+			size_hint: 0.375, 0.1
+
+# Prefix Character TextInput
+		TextInput:
+			id: after_char
+			hint_text: 'After Character... ("SpaceKey" if No AI Text)'
+			multiline: False
+			font_size: 25
+			pos_hint:{"y": 0.175, "x":0.395}
+			size_hint: 0.31, 0.1
+
+# Instance TextInput
+		TextInput:
+			id: after_inst
+			hint_text: 'After Instance... ("1" if No AI Text)'
+			multiline: False
+			font_size: 25
+			pos_hint:{"y": 0.175, "x":0.715}
+			size_hint: 0.275, 0.1
+
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# Save Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "right":1}
+			text: "Save"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				root.save_insert()
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# Submit Change Button
+		Button:
+			size_hint: 0.25,0.15 
+			pos_hint: {"x":0.375, "bottom":1}
+			text:"Submit Change"
+			font_size:24
+			color:1,1,1,1
+			background_color:1,1,0,1
+			on_release: root.insert_click()
+# Quit Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "left":1}
+			text: "Quit"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0.99,0.99,0.99,1
+			on_release:
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# DeleteWindow allows the user to delete text from the extracted
+<DeleteWindow>:
+	name: "delete"
+
+	words_delete:words_delete
+	after_char:after_char
+	after_inst:after_inst
+
+	FloatLayout:
+		size: root.width, root.height
+
+# New Line Syntax Label
+		Label:
+			pos_hint: {"top": 1, "left":1}
+			size_hint: 1, 0.03
+			color: 1,1,1,1
+			text: "Note: Empty lines are also counted as words! This ensures intentional line breaks aren't deleted."
+			font_size: 24
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			text: "Delete Text from the AI-Extracted String"
+			font_size: 60
+
+# AI Text Button-Label
+		Button:
+			id:ai_text
+			size_hint: 0.96, 0.5
+			pos_hint: {"x":0.02, "y":0.3}
+			background_color: 255,255,255,1
+			color:0,0,0,1
+			text: root.textbox_text
+			font_size: 18
+			halign:'left'
+
+# Count to Delete TextInput
+		TextInput:
+			id: words_delete
+			hint_text: "Number of Words to Delete..."
+			multiline: False
+			font_size: 36
+			pos_hint:{"y": 0.175, "x":0.02}
+			size_hint: 0.5, 0.1
+
+# Prefix Character TextInput
+		TextInput:
+			id: after_char
+			hint_text: "On Character..."
+			multiline: False
+			font_size: 40
+			pos_hint:{"y": 0.175, "x":0.98-.02-.4}
+			size_hint: 0.2, 0.1
+
+# Instance TextInput
+		TextInput:
+			id: after_inst
+			hint_text: "On Instance..."
+			multiline: False
+			font_size: 40
+			pos_hint:{"y": 0.175, "x":0.98-.2}
+			size_hint: 0.2, 0.1
+
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# Save Button 
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "right":1}
+			text: "Save"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				root.save_delete()
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# Submit Change Button
+		Button:
+			size_hint: 0.25,0.15 
+			pos_hint: {"x":0.375, "bottom":1}
+			text:"Submit Change"
+			font_size:24
+			color:1,1,1,1
+			background_color:1,1,0,1
+			on_release: root.delete_click()
+
+# Quit Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "left":1}
+			text: "Quit"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0.99,0.99,0.99,1
+			on_release:
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# ReplaceAllWindow allows the user to replace all instances of a character
+<ReplaceAllWindow>:
+	name: "replaceall"
+
+	find:find
+	replace:replace
+
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			text: "Replace All Instances of a Character"
+			font_size: 60
+
+# AI Text Button-Label
+		Button:
+			id:ai_text
+			size_hint: 0.96, 0.5
+			pos_hint: {"x":0.02, "y":0.3}
+			background_color: 255,255,255,1
+			color:0,0,0,1
+			text: root.textbox_text
+			font_size: 18
+			halign:'left'
+
+# Find TextInput
+		TextInput:
+			id: find
+			hint_text: "Find Character..."
+			multiline: False
+			font_size: 36
+			pos_hint:{"y": 0.175, "x":0.02}
+			size_hint: 0.5, 0.1
+
+# Replace TextInput
+		TextInput:
+			id: replace
+			hint_text: "Replace With..."
+			multiline: True
+			font_size: 40
+			pos_hint:{"y": 0.175, "x":0.98-.4}
+			size_hint: 0.4, 0.1
+
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# Save Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "right":1}
+			text: "Save"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				root.save_replace()
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# Submit Change Button
+		Button:
+			size_hint: 0.25,0.15 
+			pos_hint: {"x":0.375, "bottom":1}
+			text:"Submit Change"
+			font_size:24
+			color:1,1,1,1
+			background_color:1,1,0,1
+			on_release: root.replace_click()
+
+# Quit Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "left":1}
+			text: "Quit"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0.99,0.99,0.99,1
+			on_release:
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# ReplaceStreakWindow allows the user to replace a consecutive set of character instances
+<ReplaceStreakWindow>:
+	name: "replacestreak"
+
+	find:find
+	replace:replace
+	streak:streak
+	start_inst:start_inst
+
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			text: "Replace Consecutive Instances of a Character"
+			font_size: 60
+
+# AI Text Button-Label
+		Button:
+			id:ai_text
+			size_hint: 0.96, 0.5
+			pos_hint: {"x":0.02, "y":0.3}
+			background_color: 255,255,255,1
+			color:0,0,0,1
+			text: root.textbox_text
+			font_size: 18
+			halign:'left'
+
+# Find TextInput
+		TextInput:
+			id: find
+			hint_text: "Find..."
+			multiline: False
+			font_size: 36
+			pos_hint:{"y": 0.175, "x":0.02}
+			size_hint: 0.225, 0.1
+
+# Replace TextInput
+		TextInput:
+			id: replace
+			hint_text: "Replace With..."
+			multiline: True
+			font_size: 40
+			pos_hint:{"y": 0.175, "x":0.265}
+			size_hint: 0.225, 0.1
+
+# Streak Length TextInput
+		TextInput:
+			id: streak
+			hint_text: "For Instances..."
+			multiline: False
+			font_size: 40
+			pos_hint:{"y": 0.175, "x":0.51}
+			size_hint: 0.225, 0.1
+
+# Instance Box
+		TextInput:
+			id: start_inst
+			hint_text: "Starting Instance..."
+			multiline: False
+			font_size: 40
+			pos_hint:{"y": 0.175, "x":.755}
+			size_hint: 0.225, 0.1
+
+# Save Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "right":1}
+			text: "Save"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				root.save_replace()
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# Submit Change Button
+		Button:
+			size_hint: 0.25,0.15 
+			pos_hint: {"x":0.375, "bottom":1}
+			text:"Submit Change"
+			font_size:24
+			color:1,1,1,1
+			background_color:1,1,0,1
+			on_release: root.replace_click()
+
+# Quit Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "left":1}
+			text: "Quit"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0.99,0.99,0.99,1
+			on_release:
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# ReplaceOneWindow allows the user to replace one character instance
+<ReplaceOneWindow>:
+	name: "replaceone"
+
+	find:find
+	replace:replace
+	inst:inst
+
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			text: "Replace Individual Instances of a Character"
+			font_size: 60
+
+# AI Text Button-Label
+		Button:
+			id:ai_text
+			size_hint: 0.96, 0.5
+			pos_hint: {"x":0.02, "y":0.30}
+			background_color: 255,255,255,1
+			color:0,0,0,1
+			text: root.textbox_text
+			font_size: 18
+			halign:'left'
+
+# Find TextInput
+		TextInput:
+			id: find
+			hint_text: "Find..."
+			multiline: False
+			font_size: 36
+			pos_hint:{"y": 0.175, "x":0.02}
+			size_hint: 0.5, 0.1
+
+# Replace TextInput
+		TextInput:
+			id: replace
+			hint_text: "Replace With..."
+			multiline: False
+			font_size: 40
+			pos_hint:{"y": 0.175, "x":0.98-.02-.4}
+			size_hint: 0.2, 0.1
+
+# Instance TextInput
+		TextInput:
+			id: inst
+			hint_text: "Instance..."
+			multiline: False
+			font_size: 40
+			pos_hint:{"y": 0.175, "x":0.98-.2}
+			size_hint: 0.2, 0.1
+
+# Save Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "right":1}
+			text: "Save"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0,1,1,1
+			on_release:
+				root.save_replace()
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# Submit Change Button
+		Button:
+			size_hint: 0.25,0.15 
+			pos_hint: {"x":0.375, "bottom":1}
+			text:"Submit Change"
+			font_size:24
+			color:1,1,1,1
+			background_color:1,1,0,1
+			on_release: root.replace_click()
+
+# Quit Button
+		Button:
+			size_hint: 0.25,0.15
+			pos_hint: {"bottom":1, "left":1}
+			text: "Quit"
+			font_size: 24
+			color:1,1,1,1
+			background_color:0.99,0.99,0.99,1
+			on_release:
+				app.root.current = "textnav"
+				root.manager.transition.direction = "right"
+
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# ProgressWindow displays how many remaining image text strings require confirmation/edits
+<ProgressWindow>:
+	name: "progress"
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			text: "Synthesis Progress"
+			font_size: 60
+
+# Progress Button-Label
+		Button:
+			id:progress_info
+			background_color:255,255,255,1
+			color:0,0,0,1
+			font_size:70
+			text: root.label_text
+			pos_hint: {"x": .05, "y": 0.275}
+			size_hint: 0.9, 0.45
+			
+# Continue Button
+		Button:
+			pos_hint: {"bottom":1}
+			size_hint: 1, 0.2
+			color: 1,1,1,1
+			background_color: 0,1,1,1
+			text: "Continue"
+			font_size:32
+			on_release: 
+				app.root.current = "textnav"
+				root.manager.transition.direction = "left"
+		
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# PreviewWindow displays a preview of the instructions
+<PreviewWindow>:
+	name: "preview"
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 1}
+			size_hint: 1, 0.25
+			text: "Preview Instructions Before Publishing to the Repository"
+			font_size: 60
+
+# Rewind Button
+		Button:
+			pos_hint: {"y":0.225, "x":0.02}
+			size_hint: 0.15, 0.1
+			color: 1,1,1,1
+			background_color: 0,1,1,1
+			text: "<"
+			font_size:50
+			on_release: 
+				root.decrement_step()				
+
+# Skip Button
+		Button:
+			pos_hint: {"y":0.225, "x":0.98-0.15}
+			size_hint: 0.15, 0.1
+			color: 1,1,1,1
+			background_color: 0,1,1,1
+			text: ">"
+			font_size:50
+			on_release: 
+				root.increment_step()				
+					
+			
+
+# Image Re-Launch Button
+		Button:
+			id:image_launch
+			pos_hint: {"y":0.35, "x":0.02}
+			size_hint: 0.96, 0.4
+			color: 0,0,0,1
+			background_color: 255,255,255,1
+			text: root.relaunch_text
+			font_size: 60
+			on_release: root.launch_image()
+
+# Publish Button
+		Button:
+			pos_hint: {"bottom":1}
+			size_hint: 1, 0.2
+			color: 1,1,1,1
+			background_color: 0,1,1,1
+			text: "Publish"
+			font_size:32
+			on_release: 
+				root.github_instruction_publish()
+				app.root.current = "close"
+				root.manager.transition.direction = "left"
+
+# Purge Label
+		Label:
+			pos_hint: {"top": 1, "left":1}
+			size_hint: 1, 0.03
+			color: 1,1,1,1
+			text: "Closing the Application Now will Purge the Copy"
+			font_size: 24
+
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
+
+# CloseWindow confirms the upload of the instructions and prompts the app's close
+<CloseWindow>:
+	name: "close"
+	FloatLayout:
+		size: root.width, root.height
+
+# Title
+		Label:
+			color: 1,1,1,1
+			pos_hint: {"top": 0.875}
+			size_hint: 1, 0.4
+			text: "Instructions Successfully Published"
+			font_size: 50
+
+# Prompt Label
+		Label:
+			text: "You May Safely Exit the Window"
+			pos_hint: {"top": 0.45}
+			size_hint: 1, 0.3
+			font_size: 40
+			color: 1,1,1,1
+# Close Button 
+		Button:
+			pos_hint: {"top": 1, "right": 1}
+			size_hint: 0.045, 0.03
+			color: 1,1,1,1
+			background_color: 1,0,0,1
+			text: 'X'
+			font_size: 18
+			on_release: root.close_button()
