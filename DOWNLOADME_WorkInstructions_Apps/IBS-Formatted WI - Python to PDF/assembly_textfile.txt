@@ -1,0 +1,23 @@
+Impact Drill, 6mm Bit, 8mm Bit, 19mm Bit, 3/8mm Bit, 19mm Socket, Torque Wrench, Tin Snips Pliers, Loctite-243, Loctite-567, Torque Seal (orange), Yellow Paint Pen 
+2581247-HE,2583479-Spacer, 3121813-Housing, 3121815-Fan, 3121812-Fan Grill, 3106375-Motor Support Bracket, 2581683-HMotor, 2592683-Mounting Foot, 7702136-Lifting Bracket, 2581382-SAE Plug, 2580116-MNPT08 Plug, 2581335-Part Label, 2507152-HYDAC Logo Label, 2507164-Ran Rotation Label (CCW), 2507170-IN_OUT Labels, 2506176-Foam Tape, 2957994-Reflective Tape, 2506870-Flat Washer, 601476-SCHS M8 1.25x45, 7703720-Lock Washer, 2506913-SCHS M8 1.25x25, 2589303-Flat Washer M8  
+10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,210
+1.Prepare the Housing for Assembly by fastening the edge grip on the perimeter and placing lifting brackets.
+120
+30,90,210,160
+1,1,1,2"
+6mm Bit, Impact Drill, Tin Snips Pliers
+2. Prepare the Heat Exchanger with Spacers fastened with SCHS bolts. Add hex plug and SAE plug as shown. Torque SAE to 90 ft/lbs. Mark torqued bolts and plugs in yellow as shown. Apply Loctite 567 to the hex plug on bottom threads.
+240
+10,20,190,180,110,100
+1,1,8,8,1,1
+3/8mm Bit, 6mm Bit, Impact Drill, Torque Wrench, 19mm Bit, Yellow Paint Pen, Loctite-567
+3. Flip the Heat Exchanger to add the fan after it is assembled. Add 2" reflective tape to the center of part 60. Refer to BOM or drawing for any uncertainties with washers and bolts. Note that the nut and washer from the motor (MN, MW) must be used to install the fan. Use torque seal after these are added with Loctite 243 on the MN. Torque this to 22 ft/lbs. 
+360
+70,60,50,40,210,220,170
+1,1,1,1,8,8,1
+Impact Drill, 8mm Bit, 6mm Bit, Torque Wrench, Loctite-243, 19mm Bit
+4. Add feet to the cooler. After this is completed, add yellow paint to all exterior bolts and apply sticker labels as shown. Add loctite243 to bolts on the feet. In/Out Labels, Product Label, Logo Label, Fan Rotation Label required in neat, correct orientation. Note there are 2 sets of In/Out labels (on HE and on Motor)
+240
+80,180,210,150,130,120,140
+1,2,1,2,1,1,1
+Loctite-243, 6mm Bit, Impact Drill, Yellow Paint Pen
